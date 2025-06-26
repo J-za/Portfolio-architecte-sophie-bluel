@@ -1,14 +1,25 @@
 //Récupération des données travaux à partir de l'API
 
-async function chargerTravaux() {
-    const travaux = await fetch("http://localhost:5678/api/works").then(travaux => travaux.json())
-    return travaux
+async function loadWorks() {
+    try {
+        const response = await fetch("http://localhost:5678/api/works")
+        if(!response.ok) {
+            throw new Error(`HTTP error : ${response.status}`)
+        }
+        const datas = await response.json()
+        return datas
+    } catch (error) {
+        console.error(error.message)
+    }
+
 }
 
 //Affichage des travaux dans la galerie
 function afficherTravaux(travaux) {
     const gallery = document.querySelector(".gallery")
 
+    gallery.innerHTML =""
+    
     travaux.forEach(travail => {
 
         const travauxElement = document.createElement("figure")         //Création d'une balise figure
@@ -35,8 +46,8 @@ function gestionFiltres(travaux) {
 
     //-----------------Récupération des 3 catégories-----------------//
 
-    const name = travaux.map(travail => travail.category.name);
-    const setCategorie = new Set(name);
+    const names = travaux.map(travail => travail.category.name);
+    const setCategorie = new Set(names);
     const tableCategorie = [...setCategorie]
 
 
@@ -92,7 +103,7 @@ function gestionFiltres(travaux) {
 
 // Listener sur le chargement du DOM et appel des fonctions
 document.addEventListener("DOMContentLoaded", async () => {
-    const data = await chargerTravaux()
+    const data = await loadWorks()
     afficherTravaux(data)
     gestionFiltres(data)
 })
