@@ -116,6 +116,7 @@ ol,
 ul {
 	list-style: none;
 }
+
 blockquote,
 q {
 	quotes: none;
@@ -193,6 +194,7 @@ a {
 	font-weight: 400;
 	font-size: 16px;
 }
+
 a:hover {
 	color: #B1663C;
 }
@@ -316,6 +318,11 @@ footer nav ul {
 	background-color: #FFFEF8;
 	min-width: 100px;
 	font-family: 'Syne';
+}
+
+.button.active {
+	background-color: #1D6154;
+	color: #FFFEF8;
 }
 
 .button:hover {
