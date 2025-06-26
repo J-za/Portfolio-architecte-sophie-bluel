@@ -399,3 +399,76 @@ footer nav ul {
 	font-weight: 500;
 	font-size: 14px;
 }
+
+.edit-mode {
+	position: relative;
+	margin: 1em auto;
+	max-width: 35%;
+}
+
+.edit-mode h2 {
+	text-align: center;
+	margin: 0;
+}
+
+.hidden {
+	display: none;
+}
+
+#edit-button {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	transform: translateY(-50%);
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	cursor: pointer;
+	margin-bottom: 2em;
+}
+
+.edit-button-active {
+	display: flex;
+	align-items: center;
+	gap: 0.5em;
+}
+
+#edit-button span {
+	font-size: 14px;
+	font-weight: 400;
+}
+
+#edit-bar {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 30px;
+	background-color: black;
+	color: white;
+	padding: 10px 20px;
+	;
+}
+
+#edit-button-bar {
+	display: flex;
+	gap: 0.5em;
+	background: none;
+	border: none;
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	cursor: pointer;
+}
+
+.edit-body-active {
+	padding-top: 30px;
+}
+
+.edit-bar-active {
+	display: flex;
+	justify-content: center;
+	align-items: center
+}

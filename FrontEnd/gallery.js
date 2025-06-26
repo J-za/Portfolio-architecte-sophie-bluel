@@ -96,9 +96,37 @@ function handleFilters(works) {
 
 }
 
+function EditMode() {
+
+    const editBar = document.getElementById("edit-bar")
+    const editButton = document.getElementById("edit-button")
+    const editlogin = document.getElementById("edit-login")
+    const token = sessionStorage.getItem("token")
+
+    if (token) {
+        
+        document.body.classList.add("edit-body-active")
+        editBar.classList.add("edit-bar-active")
+        editButton.classList.add("edit-button-active")
+        editlogin.innerText = "logout"
+        
+
+        editlogin.addEventListener("click", (event) => {
+            event.preventDefault()
+            sessionStorage.removeItem("token")
+            editButton.classList.remove("edit-button-active")
+            window.location.href = "index.html"
+        })
+    } else {
+        editlogin.innerText ="login"
+        editlogin.setAttribute("href", "login.html")
+    }
+}
+
 // Listen for DOM load and call functions
 document.addEventListener("DOMContentLoaded", async () => {
     const data = await loadWorks()
     displayWorks(data)
     handleFilters(data)
+    EditMode()
 })
