@@ -180,6 +180,7 @@ nav ul {
 	display: flex;
 	align-items: center;
 	list-style-type: none;
+	gap: 20px;
 
 }
 
@@ -188,15 +189,19 @@ nav li {
 	font-size: 1.2em;
 }
 
-a {
+nav a {
 	text-decoration: none;
 	color: #000000;
 	font-weight: 400;
 	font-size: 16px;
 }
 
-a:hover {
+nav a:hover {
 	color: #B1663C;
+}
+
+nav img {
+	height: 19px;
 }
 
 #introduction {
@@ -295,7 +300,7 @@ input[type="submit"] {
 footer nav ul {
 	display: flex;
 	justify-content: flex-end;
-	margin: 2em
+	margin: 2em;
 }
 
 .button-content {
@@ -332,7 +337,7 @@ footer nav ul {
 
 #login {
 	width: 35%;
-	margin: auto;
+	margin: 10% 25% 25% 25%;
 }
 
 #login>* {
@@ -342,7 +347,7 @@ footer nav ul {
 
 #login form {
 	text-align: left;
-	margin-top: 30px;
+	margin-top: 20px;
 	display: flex;
 	flex-direction: column;
 }
@@ -367,9 +372,30 @@ footer nav ul {
 	border-radius: 60px;
 	border: none;
 	color: #FFFEF8;
-	font-size: 16px;
+	font-size: 14px;
 	padding: 15px;
 	background-color: #1D6154;
 	min-width: 100px;
 	font-family: 'Syne';
+	margin: 1em 0 1em 0;
+}
+
+.main-login {
+	min-width: 75%;
+	display: flex;
+	justify-content: center;
+}
+
+.login-actions {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-top: 20px;
+}
+
+.login-actions a {
+	margin: 1em 0 1em 0;
+	color: #000000;
+	font-weight: 500;
+	font-size: 14px;
 }
