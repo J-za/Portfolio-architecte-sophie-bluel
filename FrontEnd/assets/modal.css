@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+.modal {
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #0000004D;
+    z-index: 1000;
+    animation: fadeIn .3s both;
+}
+
+.modal[aria-hidden="true"] {
+    animation-name: fadeOut;
+}
+
+.modal-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+    position: relative;
+    overflow: auto;
+    width: 600px;
+    height: 680px;
+    padding: 60px 80px 0 80px;
+    background-color: #FFFEF8;
+    border-radius: 10px;
+    margin: 0;
+}
+
+#title-modal {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 400;
+    font-family: 'Work Sans';
+    color: black;
+}
+
+.grid-content {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-column-gap: 10px;
+    grid-row-gap: 20px;
+}
+
+.image-container {
+    position: relative;
+    display: inline-block;
+}
+
+.image-container img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.delete-button {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: black;
+    color: white;
+    border: none;
+    border-radius: 2px;
+    padding: 3px;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.button-close {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: white;
+    border: none;
+    font-size: 18px;
+
+}
+
+.add-button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 230px;
+	height: 36px;
+	border-radius: 60px;
+	border: none;
+	color: #FFFEF8;
+	font-size: 14px;
+	padding: 15px;
+	background-color: #1D6154;
+	min-width: 100px;
+	font-family: 'Syne';
+	margin: 40px 0;
+}
+
+.add-button-content {
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid #B3B3B3;
+    margin-top: 20px;
+
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
+}

@@ -14,7 +14,9 @@
 		crossorigin="anonymous" referrerpolicy="no-referrer" />
 	<meta name="description" content="">
 	<link rel="stylesheet" href="./assets/style.css">
+	<link rel="stylesheet" href="./assets/modal.css">
 	<script src="gallery.js" defer></script>
+	<script src="modal.js" defer></script>
 
 </head>
 
@@ -52,7 +54,7 @@
 		<section id="portfolio">
 			<div class="edit-mode">
 				<h2>Mes Projets</h2>
-				<button id="edit-button" class="hidden"><i class="fa-regular fa-pen-to-square"></i><span>modifier</span></button>
+				<button id="edit-button" class="hidden js-modal" data-target="modal.html#modal"><i class="fa-regular fa-pen-to-square"></i><span>modifier</span></button>
 			</div>
 			<div class="gallery">
 				<figure>

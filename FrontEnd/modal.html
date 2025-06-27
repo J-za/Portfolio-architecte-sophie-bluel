@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Work+Sans&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <meta name="description" content="">
+    <link rel="stylesheet" href="./assets/modal.css">
+    <script src="modal.js" defer></script>
+</head>
+
+<body>
+
+    <!-- <a href="#modal" class="js-modal">Ouvrir la boite modale</a> -->
+     <!-- <button data-target="#modal" class="js-modal">Ouvrir la boite modale</button> -->
+    <aside id="modal" class="modal" role="dialog" aria-labelledby="title-modal">
+        <section class="modal-wrapper js-modal-stop">
+            <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
+            <h1 id="title-modal">Galerie photo</h1>
+            <div class="grid-content">
+                <article class="image-container">
+                    <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+                <article class="image-container">
+                    <img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
+                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
+                </article>
+            </div>
+            <div class="add-button-content">
+                <button class="add-button">Ajouter une photo</button>
+            </div>
+        </section>
+    </aside>
+</body>
+
+</html>

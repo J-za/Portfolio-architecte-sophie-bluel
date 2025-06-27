@@ -61,39 +61,41 @@ function handleFilters(works) {
     divButtons.classList.add("button-content")
     gallery.insertAdjacentElement("beforebegin", divButtons)
 
-    function resetActiveButtons() {
-        const allButtons = divButtons.querySelectorAll(".button")
-        allButtons.forEach(btn => btn.classList.remove("active"))
-    }
+    const token = sessionStorage.getItem("token")
+    if (!token) {
+        function resetActiveButtons() {
+            const allButtons = divButtons.querySelectorAll(".button")
+            allButtons.forEach(btn => btn.classList.remove("active"))
+        }
 
-    const allButton = document.createElement("button")
-    allButton.textContent = "Tous"
-    allButton.classList.add("button", "active")
-    divButtons.appendChild(allButton)
+        const allButton = document.createElement("button")
+        allButton.textContent = "Tous"
+        allButton.classList.add("button", "active")
+        divButtons.appendChild(allButton)
 
-    allButton.addEventListener("click", function () {
-        resetActiveButtons()
-        allButton.classList.add("active")
-        gallery.innerHTML = ""
-        displayWorks(works)
-    })
-
-
-    categoryArray.forEach(category => {
-        const button = document.createElement("button")
-        button.textContent = category.name
-        button.classList.add("button")
-        divButtons.appendChild(button)
-
-        button.addEventListener("click", () => {
+        allButton.addEventListener("click", function () {
             resetActiveButtons()
-            button.classList.add("active")
-            const worksFilters = works.filter(work => work.category.id === category.id)
+            allButton.classList.add("active")
             gallery.innerHTML = ""
-            displayWorks(worksFilters)
+            displayWorks(works)
         })
-    })
 
+
+        categoryArray.forEach(category => {
+            const button = document.createElement("button")
+            button.textContent = category.name
+            button.classList.add("button")
+            divButtons.appendChild(button)
+
+            button.addEventListener("click", () => {
+                resetActiveButtons()
+                button.classList.add("active")
+                const worksFilters = works.filter(work => work.category.id === category.id)
+                gallery.innerHTML = ""
+                displayWorks(worksFilters)
+            })
+        })
+    }
 }
 
 function EditMode() {
@@ -104,12 +106,12 @@ function EditMode() {
     const token = sessionStorage.getItem("token")
 
     if (token) {
-        
+
         document.body.classList.add("edit-body-active")
         editBar.classList.add("edit-bar-active")
         editButton.classList.add("edit-button-active")
         editlogin.innerText = "logout"
-        
+
 
         editlogin.addEventListener("click", (event) => {
             event.preventDefault()
@@ -118,7 +120,7 @@ function EditMode() {
             window.location.href = "index.html"
         })
     } else {
-        editlogin.innerText ="login"
+        editlogin.innerText = "login"
         editlogin.setAttribute("href", "login.html")
     }
 }
