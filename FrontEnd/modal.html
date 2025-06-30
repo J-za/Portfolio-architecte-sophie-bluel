@@ -14,66 +14,34 @@
         crossorigin="anonymous" referrerpolicy="no-referrer" />
     <meta name="description" content="">
     <link rel="stylesheet" href="./assets/modal.css">
-    <script src="modal.js" defer></script>
+    <script type="module" src="modal.js" defer></script>
 </head>
 
 <body>
-
-    <!-- <a href="#modal" class="js-modal">Ouvrir la boite modale</a> -->
-     <!-- <button data-target="#modal" class="js-modal">Ouvrir la boite modale</button> -->
     <aside id="modal" class="modal" role="dialog" aria-labelledby="title-modal">
-        <section class="modal-wrapper js-modal-stop">
-            <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
-            <h1 id="title-modal">Galerie photo</h1>
-            <div class="grid-content">
-                <article class="image-container">
-                    <img src="assets/images/abajour-tahina.png" alt="Abajour Tahina">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/appartement-paris-v.png" alt="Appartement Paris V">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/restaurant-sushisen-londres.png" alt="Restaurant Sushisen - Londres">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/la-balisiere.png" alt="Villa “La Balisiere” - Port Louis">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/structures-thermopolis.png" alt="Structures Thermopolis">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/appartement-paris-x.png" alt="Appartement Paris X">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/le-coteau-cassis.png" alt="Pavillon “Le coteau” - Cassis">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/villa-ferneze.png" alt="Villa Ferneze - Isola d’Elba">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/appartement-paris-xviii.png" alt="Appartement Paris XVIII">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/bar-lullaby-paris.png" alt="Bar “Lullaby” - Paris">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-                <article class="image-container">
-                    <img src="assets/images/hotel-first-arte-new-delhi.png" alt="Hotel First Arte - New Delhi">
-                    <button class="delete-button"><i class="fa-solid fa-trash-can"></i></button>
-                </article>
-            </div>
+        <section id="modal-wrapper" class="modal-wrapper js-modal-stop">
+            <!-- <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
+            <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
+            <h1 id="title-modal">Ajout photo</h1>
+            <form action="#" id="add-photo-form">
+                <div class="upload-content">
+                    <label for="upload-image" class="custom-file-label">
+                        <i class="fa-regular fa-image"></i>
+                        <span>+ Ajouter photo</span>
+                    </label>
+                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png" required>
+                    <p>.jpg, .png - 4mo max</p>
+                </div>
+                <label for="title">Titre</label>
+                <input type="text" name="title" required>
+                <label for="category">Catégorie</label>
+                <select name="category" id="category">
+                    
+                </select>
+            </form>
             <div class="add-button-content">
-                <button class="add-button">Ajouter une photo</button>
-            </div>
+                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button" disabled>Valider</button>
+            </div> -->
         </section>
     </aside>
 </body>

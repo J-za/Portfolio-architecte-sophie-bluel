@@ -1,18 +1,5 @@
-// Fetch work data from the API
-
-async function loadWorks() {
-    try {
-        const response = await fetch("http://localhost:5678/api/works")
-        if (!response.ok) {
-            throw new Error(`HTTP error : ${response.status}`)
-        }
-        const datas = await response.json()
-        return datas
-    } catch (error) {
-        console.error(error.message)
-    }
-
-}
+// Get data from data.js
+import { getWorks } from "./data.js"
 
 // Display works in the gallery
 function displayWorks(works) {
@@ -40,9 +27,7 @@ function displayWorks(works) {
 
 // Create buttons and handle filters
 
-function handleFilters(works) {
-
-    const gallery = document.querySelector(".gallery")
+export function extractUniqueCategories(works) {
 
     //-----------------Retrieve the 3 categories (ID + Name)-----------------//
 
@@ -52,8 +37,13 @@ function handleFilters(works) {
             name: work.category.name
         }
     });
-    const categoryArray = [...new Map(categories.map(cat => [cat.id, cat])).values()]
+    return [...new Map(categories.map(cat => [cat.id, cat])).values()]
+}
 
+function handleFilters(works) {
+
+    const gallery = document.querySelector(".gallery")
+    const categoryArray = extractUniqueCategories(works)
 
     //-----------------Create and manage filters-----------------//
 
@@ -127,7 +117,7 @@ function EditMode() {
 
 // Listen for DOM load and call functions
 document.addEventListener("DOMContentLoaded", async () => {
-    const data = await loadWorks()
+    const data = await getWorks()
     displayWorks(data)
     handleFilters(data)
     EditMode()
