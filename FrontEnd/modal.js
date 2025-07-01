@@ -1,5 +1,5 @@
-import { getWorks } from "./data.js"
-import { extractUniqueCategories } from "./gallery.js"
+import { getWorks, deleteWork } from "./data.js"
+import { extractUniqueCategories, displayWorks } from "./gallery.js"
 
 let modal = null
 const focusableSelector = "button, a, input, textarea"
@@ -10,8 +10,9 @@ async function openModal(event) {
     event.preventDefault()
     const target = event.currentTarget.getAttribute("data-target")
     modal = await loadModal(target)
-    await renderGallery()
+    await renderGallery()   
     focusablesElement = Array.from(modal.querySelectorAll(focusableSelector))
+    // .filter(element => element.offsetParent !== null)
     previouslyFocusedElement = document.querySelector(":focus")
     modal.style.display = null
     focusablesElement[0].focus()
@@ -102,6 +103,8 @@ function displayWorksModale(works) {
         iconButton.classList.add("fa-solid")
         iconButton.classList.add("fa-trash-can")
 
+        workButton.addEventListener("click", () => handleDeleteClick(work.id))
+
         workElement.appendChild(workImage)
         workElement.appendChild(workButton)
         workButton.appendChild(iconButton)
@@ -114,6 +117,7 @@ async function renderGallery() {
     showGalleryView()
     const data = await getWorks()
     displayWorksModale(data)
+    displayWorks(data)
 }
 
 function validateFormFields() {
@@ -220,6 +224,16 @@ async function showAddPhotoView() {
 
     bindModalEvents()
 }
+
+async function handleDeleteClick(id) {
+    try{
+        await deleteWork(id)
+        await renderGallery()
+    } catch (error) {
+        console.error(error.message)
+        alert("Erreur lors de la suppression")
+    }
+} 
 
 document.querySelectorAll('.js-modal').forEach(a => {
     a.addEventListener('click', openModal)

@@ -2,7 +2,7 @@
 import { getWorks } from "./data.js"
 
 // Display works in the gallery
-function displayWorks(works) {
+export function displayWorks(works) {
     const gallery = document.querySelector(".gallery")
 
     gallery.innerHTML = ""

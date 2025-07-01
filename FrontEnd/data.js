@@ -16,3 +16,25 @@ export async function getWorks() {
     }
 
 }
+
+export async function deleteWork(id) {
+
+    const token = sessionStorage.getItem("token")
+
+    try{
+        const response = await fetch(`http://localhost:5678/api/works/${id}`, {
+            method: "DELETE",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "*/*"
+            }
+        })
+        if(!response.ok) {
+            throw new Error("Echec de la suppression")
+        }
+        worksCache = null
+        return response
+    } catch (error) {
+        console.error(error.message)
+    }
+}
