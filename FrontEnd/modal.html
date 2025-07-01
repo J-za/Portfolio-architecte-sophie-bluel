@@ -20,28 +20,38 @@
 <body>
     <aside id="modal" class="modal" role="dialog" aria-labelledby="title-modal">
         <section id="modal-wrapper" class="modal-wrapper js-modal-stop">
-            <!-- <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
+            <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
             <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
-            <h1 id="title-modal">Ajout photo</h1>
-            <form action="#" id="add-photo-form">
-                <div class="upload-content">
-                    <label for="upload-image" class="custom-file-label">
-                        <i class="fa-regular fa-image"></i>
-                        <span>+ Ajouter photo</span>
-                    </label>
-                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png" required>
-                    <p>.jpg, .png - 4mo max</p>
+            <h1 id="title-modal"></h1>
+            <div id="modal-gallery-view">
+                <div class="grid-content">
                 </div>
-                <label for="title">Titre</label>
-                <input type="text" name="title" required>
-                <label for="category">Catégorie</label>
-                <select name="category" id="category">
-                    
-                </select>
-            </form>
-            <div class="add-button-content">
-                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button" disabled>Valider</button>
-            </div> -->
+                <div class="add-button-content">
+                    <button id="open-add-photo" class="add-button">Ajouter une photo</button>
+                </div>
+            </div>
+            <div id="modal-add-photo-view">
+                <form action="#" id="add-photo-form">
+                    <div class="upload-content">
+                        <label for="upload-image" class="custom-file-label">
+                            <i class="fa-regular fa-image"></i>
+                            <span>+ Ajouter photo</span>
+                        </label>
+                        <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png" required>
+                        <p>.jpg, .png - 4mo max</p>
+                    </div>
+                    <label for="title">Titre</label>
+                    <input type="text" name="title" required>
+                    <label for="category">Catégorie</label>
+                    <select name="category" id="category">
+
+                    </select>
+                </form>
+                <div class="add-button-content">
+                    <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button"
+                        disabled>Valider</button>
+                </div>
+            </div>
         </section>
     </aside>
 </body>

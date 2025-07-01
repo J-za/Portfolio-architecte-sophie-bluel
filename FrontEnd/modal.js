@@ -116,45 +116,6 @@ async function renderGallery() {
     displayWorksModale(data)
 }
 
-function returnGalleryview() {
-    return `
-            <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
-            <h1 id="title-modal">Galerie photo</h1>
-            <div class="grid-content">
-            </div>
-            <div class="add-button-content">
-                <button id="open-add-photo" class="add-button">Ajouter une photo</button>
-            </div>
-    `
-}
-
-function returnaddPhotoView() {
-    return `
-            <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
-            <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
-            <h1 id="title-modal">Ajout photo</h1>
-            <form action="#" id="add-photo-form">
-                <div class="upload-content">
-                    <label for="upload-image" class="custom-file-label">
-                        <i class="fa-regular fa-image"></i>
-                        <span>+ Ajouter photo</span>
-                    </label>
-                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png" required>
-                    <p>.jpg, .png - 4mo max</p>
-                </div>
-                <label for="title">Titre</label>
-                <input type="text" name="title" required>
-                <label for="category">Catégorie</label>
-                <select name="category" id="category">
-                    
-                </select>
-            </form>
-            <div class="add-button-content">
-                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button" disabled>Valider</button>
-            </div>
-    `
-}
-
 function validateFormFields() {
     const form = document.getElementById("add-photo-form")
     const submitButton = document.getElementById("add-to-gallery")
@@ -196,6 +157,7 @@ function uploadImageViewer() {
         const reader = new FileReader()
         reader.onload = function (event) {
             const img = document.createElement("img")
+            console.log(event.target.result)
             img.src = event.target.result
             img.alt = "Apercu de l'image"
             img.classList.add("preview-image")
@@ -204,22 +166,28 @@ function uploadImageViewer() {
 
             uploadContent.appendChild(img)
         }
+
         reader.readAsDataURL(file)
 
     })
 }
 
 function showGalleryView() {
-    const modalContent = document.getElementById("modal-wrapper")
-    modalContent.innerHTML = returnGalleryview()
+    document.getElementById("modal-gallery-view").style.display = "block"
+    document.getElementById("modal-add-photo-view").style.display = "none"
+    document.querySelector(".button-back").style.display = "none"
+    document.getElementById("title-modal").textContent = "Galerie photo"
     document.getElementById("open-add-photo").addEventListener("click", showAddPhotoView)
 
     bindModalEvents()
 }
 
 async function showAddPhotoView() {
-    const modalContent = document.getElementById("modal-wrapper")
-    modalContent.innerHTML = returnaddPhotoView()
+    document.getElementById("modal-gallery-view").style.display = "none"
+    const modalContent = document.getElementById("modal-add-photo-view")
+    modalContent.style.display = "block"
+    document.querySelector(".button-back").style.display = "block"
+    document.getElementById("title-modal").textContent = "Ajout photo"
 
     const works = await getWorks()
     const categories = extractUniqueCategories(works)

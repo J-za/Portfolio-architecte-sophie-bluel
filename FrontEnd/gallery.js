@@ -31,13 +31,15 @@ export function extractUniqueCategories(works) {
 
     //-----------------Retrieve the 3 categories (ID + Name)-----------------//
 
+
     const categories = works.map(work => {
-        return {
+        return [work.category.id, {
             id: work.category.id,
             name: work.category.name
-        }
+        }]
     });
-    return [...new Map(categories.map(cat => [cat.id, cat])).values()]
+    return [...new Map(categories).values()]
+
 }
 
 function handleFilters(works) {
