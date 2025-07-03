@@ -42,7 +42,7 @@ export function extractUniqueCategories(works) {
 
 }
 
-function handleFilters(works) {
+export function handleFilters(works) {
 
     const gallery = document.querySelector(".gallery")
     const categoryArray = extractUniqueCategories(works)

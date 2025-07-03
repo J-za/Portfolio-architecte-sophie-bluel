@@ -1,4 +1,6 @@
 let worksCache = null
+let categoriesCache = null
+const token = sessionStorage.getItem("token")
 
 export async function getWorks() {
     if (worksCache) {
@@ -17,11 +19,25 @@ export async function getWorks() {
 
 }
 
+export async function getCategories() {
+    if (categoriesCache) {
+        return categoriesCache
+    }
+    try {
+        const response = await fetch("http://localhost:5678/api/categories")
+        if(!response.ok) {
+            throw new Error(`HTTP error : ${response.status}`)
+        }
+        categoriesCache = await response.json()
+        return categoriesCache
+    } catch (error) {
+        console.error(error.message)
+    }
+}
+
 export async function deleteWork(id) {
 
-    const token = sessionStorage.getItem("token")
-
-    try{
+    try {
         const response = await fetch(`http://localhost:5678/api/works/${id}`, {
             method: "DELETE",
             headers: {
@@ -29,11 +45,34 @@ export async function deleteWork(id) {
                 "Accept": "*/*"
             }
         })
-        if(!response.ok) {
+        if (!response.ok) {
             throw new Error("Echec de la suppression")
         }
         worksCache = null
         return response
+    } catch (error) {
+        console.error(error.message)
+    }
+}
+
+export async function sendNewWork(formData) {
+
+    try {
+        const response = await fetch("http://localhost:5678/api/works", {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Accept": "*/*"
+            },
+            body: formData
+        })
+        if (!response.ok) {
+            throw new Error("Echec de l'envoi")
+        }
+        categoriesCache = null
+        worksCache = null
+        const newWork = await response.json()
+        console.log("Nouveau projet ajouté :", newWork)
     } catch (error) {
         console.error(error.message)
     }
