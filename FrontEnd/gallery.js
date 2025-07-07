@@ -1,5 +1,6 @@
 // Get data from data.js
 import { getWorks } from "./data.js"
+import { openModal } from "./modal.js"
 
 // Display works in the gallery
 export function displayWorks(works) {
@@ -33,12 +34,9 @@ export function extractUniqueCategories(works) {
 
 
     const categories = works.map(work => {
-        return [work.category.id, {
-            id: work.category.id,
-            name: work.category.name
-        }]
+        return work.category.name
     });
-    return [...new Map(categories).values()]
+    return new Set(categories)
 
 }
 
@@ -75,14 +73,14 @@ export function handleFilters(works) {
 
         categoryArray.forEach(category => {
             const button = document.createElement("button")
-            button.textContent = category.name
+            button.textContent = category
             button.classList.add("button")
             divButtons.appendChild(button)
 
             button.addEventListener("click", () => {
                 resetActiveButtons()
                 button.classList.add("active")
-                const worksFilters = works.filter(work => work.category.id === category.id)
+                const worksFilters = works.filter(work => work.category.name === category)
                 gallery.innerHTML = ""
                 displayWorks(worksFilters)
             })
@@ -110,6 +108,11 @@ function EditMode() {
             sessionStorage.removeItem("token")
             editButton.classList.remove("edit-button-active")
             window.location.href = "index.html"
+        })
+
+        editButton.addEventListener("click", (event) => {
+            event.preventDefault
+            openModal()
         })
     } else {
         editlogin.innerText = "login"

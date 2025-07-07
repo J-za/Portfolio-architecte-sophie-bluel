@@ -48,7 +48,6 @@ export async function deleteWork(id) {
         if (!response.ok) {
             throw new Error("Echec de la suppression")
         }
-        worksCache = null
         return response
     } catch (error) {
         console.error(error.message)

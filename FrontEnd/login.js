@@ -1,3 +1,5 @@
+let errorMessage = null
+
 async function handleLoginFormSubmit() {
 
     const form = document.querySelector("form")
@@ -8,17 +10,17 @@ async function handleLoginFormSubmit() {
         event.preventDefault()
         const email = document.querySelector("#email").value
         const password = document.querySelector("#password").value
-        const emailContent = document.querySelector("#email")
-        const passwordContent = document.querySelector("#password")
-        const errorMessage = document.querySelector(".error-message")
+        const passwordContainer = document.querySelector(".password-container")
 
         const success = await loginUser(email, password)
 
 
         if (!success) {
-            errorMessage.textContent = "E-mail ou mot de passe incorrect."
-            emailContent.classList.add("error")
-            passwordContent.classList.add("error")
+            if(errorMessage) return
+            errorMessage = document.createElement("p")
+            errorMessage.innerText = "E-mail ou mot de passe incorrect."
+            errorMessage.classList.add("error-message")
+            passwordContainer.insertAdjacentElement("afterend", errorMessage)
         } else {
             sessionStorage.setItem('token', success.token)
             window.location.href = "index.html"
