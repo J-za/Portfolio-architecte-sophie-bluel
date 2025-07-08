@@ -16,28 +16,43 @@ function closeModal() {
     if (!modal) {
         return
     }
-    modal.style.display = "none"
-    modal.innerHTML = ""
+    window.setTimeout(function () {
+        modal.style.display = "none"
+        modal = null
+    }, 500)
     modal.setAttribute("aria-hidden", "true")
-    modal = null
+    modal.innerHTML = ""
 }
 
-async function renderModalGallery() {
+function createModalShell(innerContent, includeBackButton = false) {
+    const backButtonHTML = includeBackButton ? `
+    <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
+    ` : ""
     modal.innerHTML = `
     <section id="modal-wrapper" class="modal-wrapper js-modal-stop">
             <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
+            ${backButtonHTML}
+            ${innerContent}
+    </section>
+    `
+}
+
+async function renderModalGallery() {
+    const galleryHTML = `
             <h1 id="title-modal">Galerie photo</h1>
             <div class="grid-content">
             </div>
             <div class="add-button-content">
                 <button id="open-add-photo" class="add-button">Ajouter une photo</button>
             </div>
-    </section>
     `
-    if(cachedWorks.length === 0) {
+    createModalShell(galleryHTML)
+
+
+    if (cachedWorks.length === 0) {
         cachedWorks = await getWorks()
     }
-    
+
     const modalGallery = document.querySelector(".grid-content")
 
     modalGallery.innerHTML = ""
@@ -82,11 +97,9 @@ async function deleteWorks(id) {
 }
 
 async function renderModalUpload() {
-    modal.innerHTML = `
-    <section id="modal-wrapper" class="modal-wrapper js-modal-stop">
-            <button class="js-modal-close button-close"><i class="fa-solid fa-xmark"></i></button>
-            <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
-            <h1 id="title-modal">Ajout photo</h1>
+
+    const uploadHTML = `
+                <h1 id="title-modal">Ajout photo</h1>
             <form action="#" id="add-photo-form">
                 <div class="upload-content">
                     <label for="upload-image" class="custom-file-label">
@@ -106,8 +119,9 @@ async function renderModalUpload() {
             <div class="add-button-content">
                 <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button" disabled>Valider</button>
             </div>
-    </section>
     `
+    createModalShell(uploadHTML, true)
+
     const categories = await getCategories()
 
     const select = modal.querySelector("#category")
@@ -167,7 +181,7 @@ function validateFormFields() {
     const form = document.querySelector("#add-photo-form")
     const submitButton = modal.querySelector("#add-to-gallery")
     const imageContent = document.querySelector(".upload-content")
-    
+
 
     if (!form || !submitButton) return
 
@@ -183,7 +197,7 @@ function validateFormFields() {
     if (imageInput.files.length > 0) {
         const isImage = acceptedTypes.includes(image.type)
         const isUnder4MB = image.size <= 4 * 1024 * 1024
-        if(errorMessage) errorMessage.remove()
+        if (errorMessage) errorMessage.remove()
         if (!isImage) {
             errorMessage = document.createElement("p")
             errorMessage.classList.add("error-message")
@@ -197,7 +211,7 @@ function validateFormFields() {
             imageContent.insertAdjacentElement("afterend", errorMessage)
             imageOk = false
         } else {
-            errorMessage.remove()
+            if (errorMessage) errorMessage.remove()
             imageOk = true
         }
     } else {

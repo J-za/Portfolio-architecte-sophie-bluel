@@ -4,7 +4,7 @@
 
 .modal {
     position: fixed;
-    display: flex;
+    /* display: flex; */
     align-items: center;
     justify-content: center;
     top: 0;
@@ -25,13 +25,11 @@
     flex-direction: column;
     gap: 40px;
     position: relative;
-    overflow: auto;
     width: 600px;
     height: 680px;
     padding: 60px 80px 0 80px;
     background-color: #FFFEF8;
     border-radius: 10px;
-    margin: 0;
 }
 
 #title-modal {
@@ -113,7 +111,6 @@
 .add-button:disabled {
     background-color: #A7A7A7;
     cursor: not-allowed;
-    /* opacity: 0.6; */
 }
 
 .add-button-content {
@@ -156,10 +153,6 @@
     position: relative;
     background-color: #E8F1F6;
     cursor: pointer;
-}
-
-.upload-content.error {
-    border: 1px solid red;
 }
 
 .upload-content p {
