@@ -85,6 +85,9 @@ async function renderModalGallery() {
 }
 
 async function deleteWorks(id) {
+    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce travail ?");
+    if (!confirmation) return;
+    
     try {
         await deleteWork(id)
         cachedWorks = cachedWorks.filter(work => work.id !== id)
@@ -113,7 +116,7 @@ async function renderModalUpload() {
                 <input type="text" name="title" required>
                 <label for="category">Catégorie</label>
                 <select name="category" id="category">
-                    
+
                 </select>
             </form>
             <div class="add-button-content">
@@ -125,6 +128,17 @@ async function renderModalUpload() {
     const categories = await getCategories()
 
     const select = modal.querySelector("#category")
+
+    const wrapper = document.createElement("div");
+    wrapper.classList.add("select-wrapper")
+
+    const icon = document.createElement("i")
+    icon.classList.add("fa-solid", "fa-chevron-down")
+
+    select.parentNode.insertBefore(wrapper, select);
+    wrapper.appendChild(select)
+    wrapper.appendChild(icon)
+
     select.innerHTML = ""
 
     const defaultOption = document.createElement("option")
