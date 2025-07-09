@@ -54,13 +54,13 @@ export function handleFilters(works) {
     const token = sessionStorage.getItem("token")
     if (!token) {
         function resetActiveButtons() {
-            const allButtons = divButtons.querySelectorAll(".button")
+            const allButtons = divButtons.querySelectorAll(".filter-button")
             allButtons.forEach(btn => btn.classList.remove("active"))
         }
 
         const allButton = document.createElement("button")
         allButton.textContent = "Tous"
-        allButton.classList.add("button", "active")
+        allButton.classList.add("filter-button", "active")
         divButtons.appendChild(allButton)
 
         allButton.addEventListener("click", function () {
@@ -74,7 +74,7 @@ export function handleFilters(works) {
         categoryArray.forEach(category => {
             const button = document.createElement("button")
             button.textContent = category
-            button.classList.add("button")
+            button.classList.add("filter-button")
             divButtons.appendChild(button)
 
             button.addEventListener("click", () => {
@@ -90,23 +90,38 @@ export function handleFilters(works) {
 
 function EditMode() {
 
-    const editBar = document.getElementById("edit-bar")
-    const editButton = document.getElementById("edit-button")
+    const header = document.querySelector("header")
+    const title = document.querySelector(".edit-mode h2")
     const editlogin = document.getElementById("edit-login")
     const token = sessionStorage.getItem("token")
 
     if (token) {
 
-        document.body.classList.add("edit-body-active")
+        //Création de la bannière d'édition
+        const editBar = document.createElement("div")
+        editBar.id = "edit-bar"
         editBar.classList.add("edit-bar-active")
-        editButton.classList.add("edit-button-active")
+        editBar.innerHTML = `
+        <p id="edit-info-bar"><i class="fa-regular fa-pen-to-square"></i><span>Mode édition</span></p>
+        `
+        document.body.insertBefore(editBar, header)
+
+        //création du bouton d'édition
+        const editButton = document.createElement("button")
+        editButton.id = "edit-button"
+        editButton.classList.add("js-modal")
+        editButton.dataset.target = "#modal"
+        editButton.innerHTML = `
+        <i class="fa-regular fa-pen-to-square"></i><span>modifier</span>
+        `
+        title.insertAdjacentElement("afterend", editButton)
+
         editlogin.innerText = "logout"
 
 
         editlogin.addEventListener("click", (event) => {
             event.preventDefault()
             sessionStorage.removeItem("token")
-            editButton.classList.remove("edit-button-active")
             window.location.href = "index.html"
         })
 
@@ -116,7 +131,6 @@ function EditMode() {
         })
     } else {
         editlogin.innerText = "login"
-        editlogin.setAttribute("href", "login.html")
     }
 }
 
