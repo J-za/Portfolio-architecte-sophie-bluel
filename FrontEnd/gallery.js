@@ -11,6 +11,7 @@ export function displayWorks(works) {
     works.forEach(work => {
 
         const workElement = document.createElement("figure")
+        workElement.setAttribute("data-id", work.id)
 
         const workImage = document.createElement("img")
         workImage.src = work.imageUrl

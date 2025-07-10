@@ -76,6 +76,7 @@ async function renderModalGallery() {
 
         const workElement = document.createElement("article")
         workElement.classList.add("image-container")
+        workElement.setAttribute("data-id", work.id)
 
         const workImage = document.createElement("img")
         workImage.classList.add("image-container")
@@ -126,8 +127,10 @@ async function deleteWorks(id) {
     try {
         await deleteWork(id)
         cachedWorks = cachedWorks.filter(work => work.id !== id)
-        renderModalGallery()
-        displayWorks(cachedWorks)
+        const delElemGallery = document.querySelector(`figure[data-id="${id}"]`)
+        const delElemModal = document.querySelector(`article[data-id="${id}"]`)
+        delElemGallery.remove()
+        delElemModal.remove()
     } catch (error) {
         console.error(error.message)
         alert("Erreur lors de la suppression")
