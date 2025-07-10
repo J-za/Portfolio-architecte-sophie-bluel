@@ -48,21 +48,6 @@ async function renderModalGallery() {
     `
     createModalShell(galleryHTML)
 
-    const confirmPopUp = document.createElement("div")
-    confirmPopUp.id ="confirm-popup"
-    confirmPopUp.classList.add("hidden")
-    confirmPopUp.innerHTML = `
-    <div class="confirm-box">
-        <p>Êtes-vous sur de vouloir supprimer ce projet ?</p>
-        <div class="confirm-button">
-            <button id="confirm-yes">Confirmer</button>
-            <button id="confirm-no">Annuler</button>
-        </div>
-    </div>
-    `
-    modal.appendChild(confirmPopUp)
-
-
 
     if (cachedWorks.length === 0) {
         cachedWorks = await getWorks()
@@ -100,10 +85,31 @@ async function renderModalGallery() {
     bindGalleryEvents()
 }
 
+function createConfirmModal() {
+    const confirmPopUp = document.createElement("div")
+    confirmPopUp.id = "confirm-popup"
+    confirmPopUp.innerHTML = `
+    <div class="confirm-box">
+        <p>Êtes-vous sur de vouloir supprimer ce projet ?</p>
+        <div class="confirm-button">
+            <button id="confirm-yes">Confirmer</button>
+            <button id="confirm-no">Annuler</button>
+        </div>
+    </div>
+    `
+    modal.appendChild(confirmPopUp)
+}
+
+function deleteConfirmModal() {
+    const confirmPopUp = document.querySelector("#confirm-popup")
+    if (confirmPopUp) {
+        confirmPopUp.remove()
+    }
+}
+
 async function deleteWorks(id) {
-    
-    const confirmModal = document.getElementById("confirm-popup")
-    confirmModal.classList.remove("hidden")
+
+    createConfirmModal()
 
     const userConfirmed = await new Promise((resolve) => {
         const confirmYes = document.getElementById("confirm-yes")
@@ -111,19 +117,20 @@ async function deleteWorks(id) {
 
         confirmYes.addEventListener("click", (event) => {
             event.stopPropagation()
-            confirmModal.classList.add("hidden")
             resolve(true)
         })
 
         confirmNo.addEventListener("click", (event) => {
             event.stopPropagation()
-            confirmModal.classList.add("hidden")
             resolve(false)
         })
     })
 
-    if(!userConfirmed) return
-    
+    if (!userConfirmed) {
+        deleteConfirmModal()
+        return
+    }
+
     try {
         await deleteWork(id)
         cachedWorks = cachedWorks.filter(work => work.id !== id)
@@ -131,6 +138,7 @@ async function deleteWorks(id) {
         const delElemModal = document.querySelector(`article[data-id="${id}"]`)
         delElemGallery.remove()
         delElemModal.remove()
+        deleteConfirmModal()
     } catch (error) {
         console.error(error.message)
         alert("Erreur lors de la suppression")
