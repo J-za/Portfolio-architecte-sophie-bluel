@@ -48,6 +48,21 @@ async function renderModalGallery() {
     `
     createModalShell(galleryHTML)
 
+    const confirmPopUp = document.createElement("div")
+    confirmPopUp.id ="confirm-popup"
+    confirmPopUp.classList.add("hidden")
+    confirmPopUp.innerHTML = `
+    <div class="confirm-box">
+        <p>Êtes-vous sur de vouloir supprimer ce projet ?</p>
+        <div class="confirm-button">
+            <button id="confirm-yes">Confirmer</button>
+            <button id="confirm-no">Annuler</button>
+        </div>
+    </div>
+    `
+    modal.appendChild(confirmPopUp)
+
+
 
     if (cachedWorks.length === 0) {
         cachedWorks = await getWorks()
@@ -85,8 +100,28 @@ async function renderModalGallery() {
 }
 
 async function deleteWorks(id) {
-    const confirmation = confirm("Êtes-vous sûr de vouloir supprimer ce travail ?");
-    if (!confirmation) return;
+    
+    const confirmModal = document.getElementById("confirm-popup")
+    confirmModal.classList.remove("hidden")
+
+    const userConfirmed = await new Promise((resolve) => {
+        const confirmYes = document.getElementById("confirm-yes")
+        const confirmNo = document.getElementById("confirm-no")
+
+        confirmYes.addEventListener("click", (event) => {
+            event.stopPropagation()
+            confirmModal.classList.add("hidden")
+            resolve(true)
+        })
+
+        confirmNo.addEventListener("click", (event) => {
+            event.stopPropagation()
+            confirmModal.classList.add("hidden")
+            resolve(false)
+        })
+    })
+
+    if(!userConfirmed) return
     
     try {
         await deleteWork(id)

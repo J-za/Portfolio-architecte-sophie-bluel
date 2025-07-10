@@ -40,7 +40,7 @@ export function extractUniqueCategories(works) {
 
 }
 
-export function handleFilters(works) {
+function handleFilters(works) {
 
     const gallery = document.querySelector(".gallery")
     const categoryArray = extractUniqueCategories(works)
@@ -58,14 +58,14 @@ export function handleFilters(works) {
             allButtons.forEach(btn => btn.classList.remove("active"))
         }
 
-        const allButton = document.createElement("button")
-        allButton.textContent = "Tous"
-        allButton.classList.add("filter-button", "active")
-        divButtons.appendChild(allButton)
+        const showAllButton = document.createElement("button")
+        showAllButton.textContent = "Tous"
+        showAllButton.classList.add("filter-button", "active")
+        divButtons.appendChild(showAllButton)
 
-        allButton.addEventListener("click", function () {
+        showAllButton.addEventListener("click", function () {
             resetActiveButtons()
-            allButton.classList.add("active")
+            showAllButton.classList.add("active")
             gallery.innerHTML = ""
             displayWorks(works)
         })
@@ -88,7 +88,7 @@ export function handleFilters(works) {
     }
 }
 
-function EditMode() {
+function editMode() {
 
     const header = document.querySelector("header")
     const title = document.querySelector(".edit-mode h2")
@@ -96,6 +96,8 @@ function EditMode() {
     const token = sessionStorage.getItem("token")
 
     if (token) {
+
+        document.body.classList.add("edit-body-active")
 
         //Création de la bannière d'édition
         const editBar = document.createElement("div")
@@ -127,6 +129,7 @@ function EditMode() {
 
         editButton.addEventListener("click", (event) => {
             event.preventDefault
+            editButton.classList.remove("edit-button-active")
             openModal()
         })
     } else {
@@ -139,5 +142,5 @@ document.addEventListener("DOMContentLoaded", async () => {
     const data = await getWorks()
     displayWorks(data)
     handleFilters(data)
-    EditMode()
+    editMode()
 })

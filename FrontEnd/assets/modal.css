@@ -203,25 +203,56 @@
 }
 
 .select-wrapper {
-  position: relative;
-  display: inline-block;
-  width: 100%;
+    position: relative;
+    display: inline-block;
+    width: 100%;
 }
 
 .select-wrapper select {
-  width: 100%;
+    width: 100%;
 }
 
 .select-wrapper i {
-  position: absolute;
-  right: 25px;
-  top: 50%;
-  transform: translateY(-50%);
-  pointer-events: none;
-  color: #6C6C6C;
+    position: absolute;
+    right: 25px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #6C6C6C;
 }
 
+#confirm-popup {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
+#confirm-popup.hidden {
+    display: none;
+}
+
+.confirm-box {
+    background: white;
+    padding: 20px 30px;
+    border-radius: 8px;
+    text-align: center;
+    max-width: 300px;
+    border: solid 1px black;
+}
+
+.confirm-button {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.confirm-button button {
+  padding: 6px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
 
 
 @keyframes fadeIn {
