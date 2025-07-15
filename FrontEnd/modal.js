@@ -2,25 +2,37 @@ import { getWorks, deleteWork, sendNewWork, getCategories } from "./data.js"
 import { displayWorks } from "./gallery.js"
 
 let modal = null
+let confirmPopUp = null
 let cachedWorks = []
 
 export function openModal() {
     modal = document.getElementById("modal")
-    modal.style.display = "flex"
-    modal.setAttribute("aria-hidden", "false")
     renderModalGallery()
+    modal.showModal()
+    modal.classList.remove("fade-out")
+    modal.classList.add("fade-in")
+
+    modal.addEventListener("animationend", function handleOpen() {
+        modal.classList.remove("fade-in")
+        modal.removeEventListener("animationend", handleOpen)
+    })
 }
 
 function closeModal() {
     if (!modal) {
         return
     }
-    window.setTimeout(function () {
-        modal.style.display = "none"
+
+    modal.classList.remove("fade-in")
+    modal.classList.add("fade-out")
+
+    modal.addEventListener("animationend", function handleClose() {
+        modal.close()
+        modal.classList.remove("fade-out")
+        modal.removeEventListener("animationend", handleClose)
+        modal.innerHTML = ""
         modal = null
-    }, 500)
-    modal.setAttribute("aria-hidden", "true")
-    modal.innerHTML = ""
+    })
 }
 
 function createModalShell(innerContent, includeBackButton = false) {
@@ -85,10 +97,10 @@ async function renderModalGallery() {
 }
 
 function createConfirmModal() {
-    const confirmPopUp = document.createElement("div")
+    confirmPopUp = document.createElement("div")
     confirmPopUp.id = "confirm-popup"
     confirmPopUp.innerHTML = `
-    <div class="confirm-box">
+    <div class="confirm-box js-confirm-stop">
         <p>Êtes-vous sur de vouloir supprimer ce projet ?</p>
         <div class="confirm-button">
             <button id="confirm-yes">Confirmer</button>
@@ -97,10 +109,11 @@ function createConfirmModal() {
     </div>
     `
     modal.appendChild(confirmPopUp)
+
+    bindConfirmEvents()
 }
 
 function deleteConfirmModal() {
-    const confirmPopUp = document.querySelector("#confirm-popup")
     if (confirmPopUp) {
         confirmPopUp.remove()
     }
@@ -271,7 +284,7 @@ function validateFormFields() {
 
     if (imageInput.files.length > 0) {
         clearFieldError(imageContent)
-        
+
         const isImage = acceptedTypes.includes(image.type)
         const isUnder4MB = image.size <= 4 * 1024 * 1024
 
@@ -343,6 +356,10 @@ function bindGalleryEvents() {
     modal.querySelector(".js-modal-close").addEventListener("click", closeModal)
     modal.querySelector(".js-modal-stop").addEventListener("click", event => event.stopPropagation())
     modal.querySelector("#open-add-photo").addEventListener("click", renderModalUpload)
+}
+
+function bindConfirmEvents() {
+    confirmPopUp.querySelector(".js-confirm-stop").addEventListener("click", event => event.stopPropagation())
 }
 
 function bindUploadEvents() {

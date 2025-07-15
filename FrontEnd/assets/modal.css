@@ -2,22 +2,33 @@
     box-sizing: border-box;
 }
 
-.modal {
+dialog {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
     position: fixed;
-    /* display: flex; */
     align-items: center;
     justify-content: center;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #0000004D;
-    z-index: 1000;
     animation: fadeIn .3s both;
 }
 
-.modal[aria-hidden="true"] {
-    animation-name: fadeOut;
+dialog::backdrop {
+    background-color: #0000004D;
+}
+
+.modal[open] {
+    display: flex;
+    visibility: visible;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s both;
 }
 
 .modal-wrapper {
@@ -108,7 +119,7 @@
     margin: 40px 0;
 }
 
-.add-button.inactive{
+.add-button.inactive {
     background-color: #A7A7A7;
     position: relative;
     cursor: not-allowed;
@@ -131,7 +142,7 @@
 }
 
 .add-button.inactive:hover::after {
-  opacity: 1;
+    opacity: 1;
 }
 
 .add-button-content {
