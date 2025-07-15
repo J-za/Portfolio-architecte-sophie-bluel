@@ -23,7 +23,7 @@
 .modal-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 30px;
     position: relative;
     width: 600px;
     height: 680px;
@@ -108,9 +108,30 @@
     margin: 40px 0;
 }
 
-.add-button:disabled {
+.add-button.inactive{
     background-color: #A7A7A7;
+    position: relative;
     cursor: not-allowed;
+}
+
+.add-button.inactive::after {
+    content: "Veuillez compléter tous les champs *";
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: red;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.add-button.inactive:hover::after {
+  opacity: 1;
 }
 
 .add-button-content {
@@ -172,7 +193,7 @@
 }
 
 #add-photo-form label {
-    margin: 1em 0 1em 0;
+    margin: 1.8em 0 1em 0;
     font-family: 'Work Sans';
     font-weight: 500;
     font-size: 14px;
@@ -248,12 +269,18 @@
 }
 
 .confirm-button button {
-  padding: 6px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 6px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
 
+/* .form-warning {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 10px;
+} */
 
 @keyframes fadeIn {
     from {

@@ -2,7 +2,6 @@ import { getWorks, deleteWork, sendNewWork, getCategories } from "./data.js"
 import { displayWorks } from "./gallery.js"
 
 let modal = null
-let errorMessage = null
 let cachedWorks = []
 
 export function openModal() {
@@ -153,20 +152,20 @@ async function renderModalUpload() {
                 <div class="upload-content">
                     <label for="upload-image" class="custom-file-label">
                         <i class="fa-regular fa-image"></i>
-                        <span>+ Ajouter photo</span>
+                        <span>+ Ajouter photo*</span>
                     </label>
-                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png" required>
+                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png">
                     <p>.jpg, .png - 4mo max</p>
                 </div>
-                <label for="title">Titre</label>
-                <input type="text" name="title" required>
-                <label for="category">Catégorie</label>
+                <label for="title">Titre*</label>
+                <input type="text" name="title">
+                <label for="category">Catégorie*</label>
                 <select name="category" id="category">
 
                 </select>
             </form>
             <div class="add-button-content">
-                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button" disabled>Valider</button>
+                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button inactive">Valider</button>
             </div>
     `
     createModalShell(uploadHTML, true)
@@ -235,6 +234,22 @@ function showImagePreview(event) {
     reader.readAsDataURL(file)
 }
 
+function createFieldError(field, message) {
+    if (!field.nextElementSibling || !field.nextElementSibling.classList.contains("error-message")) {
+        const errorMessage = document.createElement("p")
+        errorMessage.classList.add("error-message")
+        errorMessage.textContent = message
+        field.insertAdjacentElement("afterend", errorMessage)
+    }
+}
+
+function clearFieldError(field) {
+    const next = field.nextElementSibling
+    if (next && next.classList.contains("error-message")) {
+        next.remove()
+    }
+}
+
 function validateFormFields() {
 
     let imageOk = false
@@ -255,38 +270,57 @@ function validateFormFields() {
     const acceptedTypes = imageInput.accept.split(",").map(type => type.trim())
 
     if (imageInput.files.length > 0) {
+        clearFieldError(imageContent)
+        
         const isImage = acceptedTypes.includes(image.type)
         const isUnder4MB = image.size <= 4 * 1024 * 1024
-        if (errorMessage) errorMessage.remove()
+
         if (!isImage) {
-            errorMessage = document.createElement("p")
-            errorMessage.classList.add("error-message")
-            errorMessage.textContent = "Format non supporté. Veuillez choisir un fichier JPG ou PNG."
-            imageContent.insertAdjacentElement("afterend", errorMessage)
+            createFieldError(imageContent, "Format non supporté. Veuillez choisir un fichier JPG ou PNG.")
             imageOk = false
         } else if (!isUnder4MB) {
-            errorMessage = document.createElement("p")
-            errorMessage.classList.add("error-message")
-            errorMessage.textContent = "L'image est trop volumineuse (Max. 4Mo)."
-            imageContent.insertAdjacentElement("afterend", errorMessage)
+            createFieldError(imageContent, "L'image est trop volumineuse (Max. 4Mo).")
             imageOk = false
         } else {
-            if (errorMessage) errorMessage.remove()
+            clearFieldError(imageContent)
             imageOk = true
         }
     } else {
-        return
+        createFieldError(imageContent, "Veuillez sélectionner une image.")
+        imageOk = false
     }
 
     const titleOk = titleInput.value.trim() !== ""
     const categoryOk = categorySelect.value !== ""
 
-    submitButton.disabled = !(imageOk && titleOk && categoryOk)
+    if (!titleOk) {
+        createFieldError(titleInput, "Le titre est obligatoire.")
+    } else {
+        clearFieldError(titleInput)
+    }
+
+    if (!categoryOk) {
+        createFieldError(categorySelect, "Veuillez choisir une catégorie.")
+    } else {
+        clearFieldError(categorySelect)
+    }
+
+    const isValid = imageOk && titleOk && categoryOk
+
+    submitButton.classList.toggle("inactive", !isValid)
+
+    return isValid;
 }
 
 async function handleSubmitForm(event) {
 
     event.preventDefault()
+
+    const isFormValid = validateFormFields();
+
+    if (!isFormValid) {
+        return;
+    }
 
     const form = event.target
     const formData = new FormData(form)
