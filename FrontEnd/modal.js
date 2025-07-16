@@ -1,5 +1,6 @@
 import { getWorks, deleteWork, sendNewWork, getCategories } from "./data.js"
 import { displayWorks } from "./gallery.js"
+import { validateImageField, validateTitleField, validateCategoryField} from "./validator.js"
 
 let modal = null
 let confirmPopUp = null
@@ -247,76 +248,17 @@ function showImagePreview(event) {
     reader.readAsDataURL(file)
 }
 
-function createFieldError(field, message) {
-    if (!field.nextElementSibling || !field.nextElementSibling.classList.contains("error-message")) {
-        const errorMessage = document.createElement("p")
-        errorMessage.classList.add("error-message")
-        errorMessage.textContent = message
-        field.insertAdjacentElement("afterend", errorMessage)
-    }
-}
-
-function clearFieldError(field) {
-    const next = field.nextElementSibling
-    if (next && next.classList.contains("error-message")) {
-        next.remove()
-    }
-}
-
 function validateFormFields() {
-
-    let imageOk = false
     const form = document.querySelector("#add-photo-form")
     const submitButton = modal.querySelector("#add-to-gallery")
-    const imageContent = document.querySelector(".upload-content")
-
 
     if (!form || !submitButton) return
 
-    const imageInput = form.querySelector('input[name="image"]')
-    const titleInput = form.querySelector('input[name="title"]')
-    const categorySelect = form.querySelector('select[name="category"]')
+    const imageOk = validateImageField()
 
-    if (!imageInput || !titleInput || !categorySelect) return
+    const titleOk = validateTitleField()
 
-    const image = imageInput.files[0]
-    const acceptedTypes = imageInput.accept.split(",").map(type => type.trim())
-
-    if (imageInput.files.length > 0) {
-        clearFieldError(imageContent)
-
-        const isImage = acceptedTypes.includes(image.type)
-        const isUnder4MB = image.size <= 4 * 1024 * 1024
-
-        if (!isImage) {
-            createFieldError(imageContent, "Format non supporté. Veuillez choisir un fichier JPG ou PNG.")
-            imageOk = false
-        } else if (!isUnder4MB) {
-            createFieldError(imageContent, "L'image est trop volumineuse (Max. 4Mo).")
-            imageOk = false
-        } else {
-            clearFieldError(imageContent)
-            imageOk = true
-        }
-    } else {
-        createFieldError(imageContent, "Veuillez sélectionner une image.")
-        imageOk = false
-    }
-
-    const titleOk = titleInput.value.trim() !== ""
-    const categoryOk = categorySelect.value !== ""
-
-    if (!titleOk) {
-        createFieldError(titleInput, "Le titre est obligatoire.")
-    } else {
-        clearFieldError(titleInput)
-    }
-
-    if (!categoryOk) {
-        createFieldError(categorySelect, "Veuillez choisir une catégorie.")
-    } else {
-        clearFieldError(categorySelect)
-    }
+    const categoryOk = validateCategoryField()
 
     const isValid = imageOk && titleOk && categoryOk
 
@@ -369,7 +311,13 @@ function bindUploadEvents() {
 
     const form = modal.querySelector("#add-photo-form")
     const fileInput = form.querySelector("#upload-image")
+    const imageInput = form.querySelector('input[name="image"]')
+    const titleInput = form.querySelector('input[name="title"]')
+    const categorySelect = form.querySelector('select[name="category"]')
+
     fileInput.addEventListener("change", showImagePreview)
-    form.addEventListener("change", validateFormFields)
     form.addEventListener("submit", handleSubmitForm)
+    imageInput.addEventListener("change", validateImageField)
+    titleInput.addEventListener("blur", validateTitleField)
+    categorySelect.addEventListener("blur", validateCategoryField)
 }
