@@ -6,6 +6,7 @@ let modal = null
 let confirmPopUp = null
 let cachedWorks = []
 
+//Ouverture/fermeture de la modale
 export function openModal() {
     modal = document.getElementById("modal")
     renderModalGallery()
@@ -36,6 +37,7 @@ function closeModal() {
     })
 }
 
+//Création du rendu modale
 function createModalShell(innerContent, includeBackButton = false) {
     const backButtonHTML = includeBackButton ? `
     <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
@@ -49,6 +51,7 @@ function createModalShell(innerContent, includeBackButton = false) {
     `
 }
 
+//Affichage et action modale Galerie
 async function renderModalGallery() {
     const galleryHTML = `
             <h1 id="title-modal">Galerie photo</h1>
@@ -158,6 +161,7 @@ async function deleteWorks(id) {
     }
 }
 
+//Affichage et action modale Nouveau travail
 async function renderModalUpload() {
 
     const uploadHTML = `

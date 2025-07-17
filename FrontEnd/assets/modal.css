@@ -286,13 +286,6 @@ dialog::backdrop {
     cursor: pointer;
 }
 
-/* .form-warning {
-    text-align: center;
-    font-size: 12px;
-    color: #666;
-    margin-bottom: 10px;
-} */
-
 @keyframes fadeIn {
     from {
         opacity: 0;

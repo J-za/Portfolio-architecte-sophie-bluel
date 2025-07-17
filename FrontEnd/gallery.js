@@ -1,8 +1,7 @@
-// Get data from data.js
 import { getWorks } from "./data.js"
 import { openModal } from "./modal.js"
 
-// Display works in the gallery
+// Affichage des travaux dans la galerie
 export function displayWorks(works) {
     const gallery = document.querySelector(".gallery")
 
@@ -27,7 +26,7 @@ export function displayWorks(works) {
 
 }
 
-// Create buttons and handle filters
+// Création et gestion des filtres
 
 export function extractUniqueCategories(works) {
 
@@ -138,7 +137,7 @@ function editMode() {
     }
 }
 
-// Listen for DOM load and call functions
+//Gestion des évenements
 document.addEventListener("DOMContentLoaded", async () => {
     const data = await getWorks()
     displayWorks(data)
