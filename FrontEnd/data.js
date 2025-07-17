@@ -2,6 +2,7 @@ let worksCache = null
 let categoriesCache = null
 const token = sessionStorage.getItem("token")
 
+//Appel API
 export async function getWorks() {
     if (worksCache) {
         return worksCache
@@ -33,6 +34,27 @@ export async function getCategories() {
     } catch (error) {
         console.error(error.message)
     }
+}
+
+export async function loginUser(email, password) {
+
+    const payload = { email, password }
+
+    try {
+        const response = await fetch("http://localhost:5678/api/users/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+        })
+        if (!response.ok) {
+            throw new Error(`HTTP error : ${response.status}`)
+        }
+        const data = await response.json()
+        return data
+    } catch (error) {
+        console.error(error.message)
+    }
+
 }
 
 export async function deleteWork(id) {

@@ -1,53 +1,38 @@
-let errorMessage = null
+import { createFieldError, validateEmailField, validatePasswordField } from "./validator.js"
+import { loginUser } from "./data.js"
 
+//Gestion du formulaire d'envoi
 async function handleLoginFormSubmit() {
 
-    const form = document.querySelector("form")
+    const form = document.querySelector("#connect-form")
 
     togglePasswordView()
 
+    const emailInput = form.querySelector('input[name="email"]')
+    const passwordInput = form.querySelector('input[name="password"]')
+
+    emailInput.addEventListener("blur", validateEmailField)
+    passwordInput.addEventListener("blur", validatePasswordField)
+
     form.addEventListener("submit", async (event) => {
         event.preventDefault()
-        const email = document.querySelector("#email").value
-        const password = document.querySelector("#password").value
+
+        if (!validateLoginFields()) return
+
+        const email = emailInput.value
+        const password = passwordInput.value
         const passwordContainer = document.querySelector(".password-container")
 
         const success = await loginUser(email, password)
 
-
         if (!success) {
-            if(errorMessage) return
-            errorMessage = document.createElement("p")
-            errorMessage.innerText = "E-mail ou mot de passe incorrect."
-            errorMessage.classList.add("error-message")
-            passwordContainer.insertAdjacentElement("afterend", errorMessage)
+            createFieldError(passwordContainer, "E-mail ou mot de passe incorrect.")
         } else {
             sessionStorage.setItem('token', success.token)
             window.location.href = "index.html"
         }
 
     })
-
-}
-
-async function loginUser(email, password) {
-
-    const payload = { email, password }
-
-    try {
-        const response = await fetch("http://localhost:5678/api/users/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
-        })
-        if (!response.ok) {
-            throw new Error(`HTTP error : ${response.status}`)
-        }
-        const data = await response.json()
-        return data
-    } catch (error) {
-        console.error(error.message)
-    }
 
 }
 
@@ -69,6 +54,18 @@ function togglePasswordView() {
     })
 }
 
+function validateLoginFields() {
+    let isValid = true
+
+    if (!validateEmailField() || !validatePasswordField()) {
+        isValid = false
+    } 
+
+    return isValid
+}
+
+//Gestion des évenements
 document.addEventListener("DOMContentLoaded", () => {
     handleLoginFormSubmit()
 })
+

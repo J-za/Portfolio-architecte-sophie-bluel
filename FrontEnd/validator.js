@@ -1,3 +1,4 @@
+//Création des messages d'erreur
 export function createFieldError(field, message) {
     if (!field.nextElementSibling || !field.nextElementSibling.classList.contains("error-message")) {
         const errorMessage = document.createElement("p")
@@ -14,6 +15,41 @@ export function clearFieldError(field) {
     }
 }
 
+// Validation champs Login
+export function validateEmailField() {
+    const form = document.querySelector("#connect-form")
+    const emailInput = form.querySelector('input[name="email"]')
+
+    if (!emailInput) return
+
+    const emailOk = emailInput.value.trim() !== ""
+
+    if (!emailOk) {
+        createFieldError(emailInput, "L'email est obligatoire.")
+    } else {
+        clearFieldError(emailInput)
+        return emailOk
+    }
+}
+
+export function validatePasswordField() {
+    const form = document.querySelector("#connect-form")
+    const passwordInput = form.querySelector('input[name="password"]')
+    const passwordContainer = document.querySelector(".password-container")
+
+    if (!passwordInput) return
+
+    const passwordOk = passwordInput.value.trim() !== ""
+
+    if (!passwordOk) {
+        createFieldError(passwordContainer, "Le mot de passe est obligatoire.")
+    } else {
+        clearFieldError(passwordContainer)
+        return passwordOk
+    }
+}
+
+//Validation champs Envoi 
 export function validateImageField() {
     let imageOk = false
     const form = document.querySelector("#add-photo-form")

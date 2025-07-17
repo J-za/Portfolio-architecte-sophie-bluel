@@ -367,11 +367,12 @@ footer nav ul {
 
 .password-container {
 	position: relative;
-	display: inline-block;
 }
 
 .password-container input {
+	width: 100%;
 	padding-right: 30px;
+	box-sizing: border-box;
 }
 
 .password-container i {
@@ -430,9 +431,11 @@ input[type="password"]::-ms-clear {
 }
 
 .error-message {
+	display: block;
 	color: red;
 	font-size: 0.8rem;
 	margin-top: 5px;
+	min-height: 1em;
 }
 
 .edit-mode {
