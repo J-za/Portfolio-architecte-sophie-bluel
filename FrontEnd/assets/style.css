@@ -107,11 +107,6 @@ section {
 	display: block;
 }
 
-body {
-	line-height: 1;
-	background-color: #FFFEF8;
-}
-
 ol,
 ul {
 	list-style: none;
@@ -137,16 +132,43 @@ table {
 
 /** end reset css**/
 body {
-	max-width: 1140px;
+	display: flex;
+	flex-direction: column;
 	margin: auto;
 	font-family: 'Work Sans';
 	font-size: 14px;
+	line-height: 1;
+	background-color: #FFFEF8;
+	min-height: 100vh;
+}
+
+main {
+	max-width: 980px;
+	margin: 0 auto;
+	width: 100%;
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+}
+
+footer {
+	height: 60px;
+	background-color: white;
+	font-size: 14px;
+	font-weight: 300;
+	line-height: 1.2;
+	text-align: right;
+	flex-shrink: 0;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
 }
 
 header {
 	display: flex;
 	justify-content: space-between;
-	margin: 50px 0
+	margin: 50px 150px
 }
 
 section {
@@ -207,16 +229,16 @@ nav img {
 #introduction {
 	display: flex;
 	align-items: center;
+	gap: 60px;
 }
 
 #introduction figure {
-	flex: 1
+	flex: 1.2
 }
 
 #introduction img {
 	display: block;
-	margin: auto;
-	width: 80%;
+	width: 100%;
 }
 
 #introduction article {
@@ -224,16 +246,16 @@ nav img {
 }
 
 #introduction h2 {
-	margin-bottom: 1em;
+	margin-bottom: 0.5em;
 }
 
 #introduction p {
-	margin-bottom: 0.5em;
+	margin-bottom: 1.5em;
 }
 
 #portfolio h2 {
 	text-align: center;
-	margin-bottom: 1em;
+	margin-bottom: 1.8em;
 }
 
 .gallery {
@@ -246,12 +268,17 @@ nav img {
 
 .gallery img {
 	width: 100%;
-	max-height: 480px;
+	height: 400px;
+	object-fit: cover;
+}
+
+.gallery figcaption {
+	margin-top: 5px;
 }
 
 #contact {
-	width: 50%;
-	margin: auto;
+	width: 40%;
+	margin: 30px auto;
 }
 
 #contact>* {
@@ -286,21 +313,21 @@ nav img {
 	box-shadow: 0px 4px 14px rgba(0, 0, 0, 0.09);
 }
 
-input[type="submit"] {
+#contact input[type="submit"] {
 	font-family: 'Syne';
+	font-size: 14px;
 	font-weight: 700;
 	color: white;
 	background-color: #1D6154;
 	margin: 2em auto;
 	width: 180px;
+	height: 36px;
 	text-align: center;
 	border-radius: 60px;
 }
 
 footer nav ul {
-	display: flex;
-	justify-content: flex-end;
-	margin: 2em;
+	margin-right: 8em;
 }
 
 .button-content {
@@ -337,7 +364,7 @@ footer nav ul {
 
 #login {
 	width: 35%;
-	margin: 10% 25% 25% 25%;
+	margin: 10% 25% 17% 25%;
 }
 
 #login>* {
@@ -367,11 +394,12 @@ footer nav ul {
 
 .password-container {
 	position: relative;
-	display: inline-block;
 }
 
 .password-container input {
+	width: 100%;
 	padding-right: 30px;
+	box-sizing: border-box;
 }
 
 .password-container i {
@@ -385,7 +413,7 @@ footer nav ul {
 
 input[type="password"]::-ms-reveal,
 input[type="password"]::-ms-clear {
-  display: none;
+	display: none;
 }
 
 #login label {
@@ -412,6 +440,7 @@ input[type="password"]::-ms-clear {
 .main-login {
 	min-width: 75%;
 	display: flex;
+	flex-direction: row;
 	justify-content: center;
 }
 
@@ -430,19 +459,22 @@ input[type="password"]::-ms-clear {
 }
 
 .error-message {
+	display: block;
 	color: red;
 	font-size: 0.8rem;
 	margin-top: 5px;
+	min-height: 1em;
 }
 
 .edit-mode {
 	position: relative;
-	margin: 1em auto;
-	max-width: 35%;
+	text-align: center;
+	margin: 2em auto;
+	width: fit-content;
+	/* max-width: 35%; */
 }
 
 .edit-mode h2 {
-	text-align: center;
 	margin: 0;
 }
 
@@ -452,7 +484,7 @@ input[type="password"]::-ms-clear {
 
 #edit-button {
 	position: absolute;
-	right: 0;
+	right: -110px;
 	top: 50%;
 	transform: translateY(-50%);
 	background: none;
@@ -462,12 +494,8 @@ input[type="password"]::-ms-clear {
 	color: inherit;
 	cursor: pointer;
 	margin-bottom: 2em;
-}
-
-.edit-button-active {
 	display: flex;
-	align-items: center;
-	gap: 0.5em;
+	gap: 10px;
 }
 
 #edit-button span {
@@ -480,7 +508,7 @@ input[type="password"]::-ms-clear {
 	top: 0;
 	left: 0;
 	right: 0;
-	height: 30px;
+	height: 50px;
 	background-color: black;
 	color: white;
 	padding: 10px 20px;
@@ -514,7 +542,9 @@ input[type="password"]::-ms-clear {
 		flex-direction: column;
 		align-items: center;
 	}
+
 	#edit-button {
 		position: relative;
+		right: auto;
 	}
 }

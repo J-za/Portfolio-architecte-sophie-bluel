@@ -1,29 +1,42 @@
 import { getWorks, deleteWork, sendNewWork, getCategories } from "./data.js"
-import { displayWorks } from "./gallery.js"
+import { validateImageField, validateTitleField, validateCategoryField } from "./validator.js"
 
 let modal = null
-let errorMessage = null
+let confirmPopUp = null
 let cachedWorks = []
 
+//Ouverture/fermeture de la modale
 export function openModal() {
     modal = document.getElementById("modal")
-    modal.style.display = "flex"
-    modal.setAttribute("aria-hidden", "false")
     renderModalGallery()
+    modal.showModal()
+    modal.classList.remove("fade-out")
+    modal.classList.add("fade-in")
+
+    modal.addEventListener("animationend", function handleOpen() {
+        modal.classList.remove("fade-in")
+        modal.removeEventListener("animationend", handleOpen)
+    })
 }
 
 function closeModal() {
     if (!modal) {
         return
     }
-    window.setTimeout(function () {
-        modal.style.display = "none"
+
+    modal.classList.remove("fade-in")
+    modal.classList.add("fade-out")
+
+    modal.addEventListener("animationend", function handleClose() {
+        modal.close()
+        modal.classList.remove("fade-out")
+        modal.removeEventListener("animationend", handleClose)
+        modal.innerHTML = ""
         modal = null
-    }, 500)
-    modal.setAttribute("aria-hidden", "true")
-    modal.innerHTML = ""
+    })
 }
 
+//Création du rendu modale
 function createModalShell(innerContent, includeBackButton = false) {
     const backButtonHTML = includeBackButton ? `
     <button class="js-modal-back button-back"><i class="fa-solid fa-arrow-left"></i></button>
@@ -37,6 +50,7 @@ function createModalShell(innerContent, includeBackButton = false) {
     `
 }
 
+//Affichage et action modale Galerie
 async function renderModalGallery() {
     const galleryHTML = `
             <h1 id="title-modal">Galerie photo</h1>
@@ -47,21 +61,6 @@ async function renderModalGallery() {
             </div>
     `
     createModalShell(galleryHTML)
-
-    const confirmPopUp = document.createElement("div")
-    confirmPopUp.id ="confirm-popup"
-    confirmPopUp.classList.add("hidden")
-    confirmPopUp.innerHTML = `
-    <div class="confirm-box">
-        <p>Êtes-vous sur de vouloir supprimer ce projet ?</p>
-        <div class="confirm-button">
-            <button id="confirm-yes">Confirmer</button>
-            <button id="confirm-no">Annuler</button>
-        </div>
-    </div>
-    `
-    modal.appendChild(confirmPopUp)
-
 
 
     if (cachedWorks.length === 0) {
@@ -76,6 +75,7 @@ async function renderModalGallery() {
 
         const workElement = document.createElement("article")
         workElement.classList.add("image-container")
+        workElement.setAttribute("data-id", work.id)
 
         const workImage = document.createElement("img")
         workImage.classList.add("image-container")
@@ -99,10 +99,32 @@ async function renderModalGallery() {
     bindGalleryEvents()
 }
 
+function createConfirmModal() {
+    confirmPopUp = document.createElement("div")
+    confirmPopUp.id = "confirm-popup"
+    confirmPopUp.innerHTML = `
+    <div class="confirm-box js-confirm-stop">
+        <p>Êtes-vous sur de vouloir supprimer ce projet ?</p>
+        <div class="confirm-button">
+            <button id="confirm-yes">Confirmer</button>
+            <button id="confirm-no">Annuler</button>
+        </div>
+    </div>
+    `
+    modal.appendChild(confirmPopUp)
+
+    bindConfirmEvents()
+}
+
+function deleteConfirmModal() {
+    if (confirmPopUp) {
+        confirmPopUp.remove()
+    }
+}
+
 async function deleteWorks(id) {
-    
-    const confirmModal = document.getElementById("confirm-popup")
-    confirmModal.classList.remove("hidden")
+
+    createConfirmModal()
 
     const userConfirmed = await new Promise((resolve) => {
         const confirmYes = document.getElementById("confirm-yes")
@@ -110,30 +132,35 @@ async function deleteWorks(id) {
 
         confirmYes.addEventListener("click", (event) => {
             event.stopPropagation()
-            confirmModal.classList.add("hidden")
             resolve(true)
         })
 
         confirmNo.addEventListener("click", (event) => {
             event.stopPropagation()
-            confirmModal.classList.add("hidden")
             resolve(false)
         })
     })
 
-    if(!userConfirmed) return
-    
+    if (!userConfirmed) {
+        deleteConfirmModal()
+        return
+    }
+
     try {
         await deleteWork(id)
         cachedWorks = cachedWorks.filter(work => work.id !== id)
-        renderModalGallery()
-        displayWorks(cachedWorks)
+        const delElemGallery = document.querySelector(`figure[data-id="${id}"]`)
+        const delElemModal = document.querySelector(`article[data-id="${id}"]`)
+        delElemGallery.remove()
+        delElemModal.remove()
+        deleteConfirmModal()
     } catch (error) {
         console.error(error.message)
         alert("Erreur lors de la suppression")
     }
 }
 
+//Affichage et action modale Nouveau travail
 async function renderModalUpload() {
 
     const uploadHTML = `
@@ -142,20 +169,20 @@ async function renderModalUpload() {
                 <div class="upload-content">
                     <label for="upload-image" class="custom-file-label">
                         <i class="fa-regular fa-image"></i>
-                        <span>+ Ajouter photo</span>
+                        <span>+ Ajouter photo*</span>
                     </label>
-                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png" required>
+                    <input type="file" id="upload-image" name="image" accept="image/jpeg, image/png">
                     <p>.jpg, .png - 4mo max</p>
                 </div>
-                <label for="title">Titre</label>
-                <input type="text" name="title" required>
-                <label for="category">Catégorie</label>
+                <label for="title">Titre*</label>
+                <input type="text" name="title">
+                <label for="category">Catégorie*</label>
                 <select name="category" id="category">
 
                 </select>
             </form>
-            <div class="add-button-content">
-                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button" disabled>Valider</button>
+            <div class="send-button-content">
+                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button inactive" disabled>Valider</button>
             </div>
     `
     createModalShell(uploadHTML, true)
@@ -225,65 +252,58 @@ function showImagePreview(event) {
 }
 
 function validateFormFields() {
-
-    let imageOk = false
     const form = document.querySelector("#add-photo-form")
     const submitButton = modal.querySelector("#add-to-gallery")
-    const imageContent = document.querySelector(".upload-content")
-
 
     if (!form || !submitButton) return
 
-    const imageInput = form.querySelector('input[name="image"]')
-    const titleInput = form.querySelector('input[name="title"]')
-    const categorySelect = form.querySelector('select[name="category"]')
+    const imageOk = validateImageField()
 
-    if (!imageInput || !titleInput || !categorySelect) return
+    const titleOk = validateTitleField()
 
-    const image = imageInput.files[0]
-    const acceptedTypes = imageInput.accept.split(",").map(type => type.trim())
+    const categoryOk = validateCategoryField()
 
-    if (imageInput.files.length > 0) {
-        const isImage = acceptedTypes.includes(image.type)
-        const isUnder4MB = image.size <= 4 * 1024 * 1024
-        if (errorMessage) errorMessage.remove()
-        if (!isImage) {
-            errorMessage = document.createElement("p")
-            errorMessage.classList.add("error-message")
-            errorMessage.textContent = "Format non supporté. Veuillez choisir un fichier JPG ou PNG."
-            imageContent.insertAdjacentElement("afterend", errorMessage)
-            imageOk = false
-        } else if (!isUnder4MB) {
-            errorMessage = document.createElement("p")
-            errorMessage.classList.add("error-message")
-            errorMessage.textContent = "L'image est trop volumineuse (Max. 4Mo)."
-            imageContent.insertAdjacentElement("afterend", errorMessage)
-            imageOk = false
-        } else {
-            if (errorMessage) errorMessage.remove()
-            imageOk = true
-        }
-    } else {
-        return
-    }
+    const isValid = imageOk && titleOk && categoryOk
 
-    const titleOk = titleInput.value.trim() !== ""
-    const categoryOk = categorySelect.value !== ""
+    submitButton.classList.toggle("inactive", !isValid)
+    submitButton.disabled = !isValid
 
-    submitButton.disabled = !(imageOk && titleOk && categoryOk)
+    return isValid;
 }
 
 async function handleSubmitForm(event) {
 
     event.preventDefault()
 
+    const isFormValid = validateFormFields();
+
+    if (!isFormValid) {
+        return;
+    }
+
     const form = event.target
     const formData = new FormData(form)
 
     try {
-        await sendNewWork(formData)
+        const newWork = await sendNewWork(formData)
         cachedWorks = await getWorks()
-        displayWorks(cachedWorks)
+
+        const gallery = document.querySelector(".gallery")
+
+        const workElement = document.createElement("figure")
+        workElement.setAttribute("data-id", newWork.id)
+
+        const workImage = document.createElement("img")
+        workImage.src = newWork.imageUrl
+        workImage.alt = newWork.title
+
+        const workCaption = document.createElement("figcaption")
+        workCaption.innerText = newWork.title
+
+        workElement.appendChild(workImage)
+        workElement.appendChild(workCaption)
+        gallery.appendChild(workElement)
+
         closeModal()
     } catch (error) {
         console.error(error.message)
@@ -300,6 +320,10 @@ function bindGalleryEvents() {
     modal.querySelector("#open-add-photo").addEventListener("click", renderModalUpload)
 }
 
+function bindConfirmEvents() {
+    confirmPopUp.querySelector(".js-confirm-stop").addEventListener("click", event => event.stopPropagation())
+}
+
 function bindUploadEvents() {
     modal.querySelector(".js-modal-close").addEventListener("click", closeModal)
     modal.querySelector(".js-modal-back").addEventListener("click", renderModalGallery)
@@ -307,7 +331,14 @@ function bindUploadEvents() {
 
     const form = modal.querySelector("#add-photo-form")
     const fileInput = form.querySelector("#upload-image")
+    const imageInput = form.querySelector('input[name="image"]')
+    const titleInput = form.querySelector('input[name="title"]')
+    const categorySelect = form.querySelector('select[name="category"]')
+
     fileInput.addEventListener("change", showImagePreview)
-    form.addEventListener("change", validateFormFields)
     form.addEventListener("submit", handleSubmitForm)
+    imageInput.addEventListener("change", validateImageField)
+    form.addEventListener("change", validateFormFields)
+    titleInput.addEventListener("blur", validateTitleField)
+    categorySelect.addEventListener("blur", validateCategoryField)
 }

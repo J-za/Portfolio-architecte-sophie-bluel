@@ -2,34 +2,46 @@
     box-sizing: border-box;
 }
 
-.modal {
+dialog {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: none;
+    color: inherit;
     position: fixed;
-    /* display: flex; */
     align-items: center;
     justify-content: center;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: #0000004D;
-    z-index: 1000;
     animation: fadeIn .3s both;
 }
 
-.modal[aria-hidden="true"] {
-    animation-name: fadeOut;
+dialog::backdrop {
+    background-color: #0000004D;
+}
+
+.modal[open] {
+    display: flex;
+    visibility: visible;
+}
+
+.fade-out {
+    animation: fadeOut 0.3s both;
 }
 
 .modal-wrapper {
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 30px;
     position: relative;
     width: 600px;
-    height: 680px;
+    height: 650px;
     padding: 60px 80px 0 80px;
     background-color: #FFFEF8;
     border-radius: 10px;
+    overflow: auto;
 }
 
 #title-modal {
@@ -38,6 +50,7 @@
     font-weight: 400;
     font-family: 'Work Sans';
     color: black;
+    margin-bottom: 10px;
 }
 
 .grid-content {
@@ -50,13 +63,13 @@
 
 .image-container {
     position: relative;
-    display: inline-block;
 }
 
 .image-container img {
     display: block;
     width: 100%;
     height: 102px;
+    object-fit: cover;
 }
 
 .delete-button {
@@ -105,20 +118,47 @@
     background-color: #1D6154;
     min-width: 100px;
     font-family: 'Syne';
-    margin: 40px 0;
+    margin: 30px 0;
 }
 
-.add-button:disabled {
+.add-button.inactive {
     background-color: #A7A7A7;
+    position: relative;
     cursor: not-allowed;
+}
+
+.add-button.inactive::after {
+    content: "Veuillez compléter tous les champs *";
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%);
+    color: red;
+    font-size: 12px;
+    padding: 6px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.add-button.inactive:hover::after {
+    opacity: 1;
 }
 
 .add-button-content {
     display: flex;
     justify-content: center;
     border-top: 2px solid #B3B3B3;
-    margin-top: 20px;
+    margin-top: 40px;
+}
 
+.send-button-content {
+    display: flex;
+    justify-content: center;
+    border-top: 2px solid #B3B3B3;
+    margin-top: 10px;
 }
 
 .custom-file-label {
@@ -153,6 +193,7 @@
     position: relative;
     background-color: #E8F1F6;
     cursor: pointer;
+    margin-bottom: 5px;
 }
 
 .upload-content p {
@@ -172,7 +213,7 @@
 }
 
 #add-photo-form label {
-    margin: 1em 0 1em 0;
+    margin: 1.5em 0 1em 0;
     font-family: 'Work Sans';
     font-weight: 500;
     font-size: 14px;
@@ -204,12 +245,12 @@
 
 .select-wrapper {
     position: relative;
-    display: inline-block;
-    width: 100%;
 }
 
 .select-wrapper select {
     width: 100%;
+    padding-right: 30px;
+    box-sizing: border-box;
 }
 
 .select-wrapper i {
@@ -248,12 +289,11 @@
 }
 
 .confirm-button button {
-  padding: 6px 15px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+    padding: 6px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
 }
-
 
 @keyframes fadeIn {
     from {
