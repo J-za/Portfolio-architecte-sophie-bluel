@@ -105,15 +105,16 @@ export function validateTitleField() {
 export function validateCategoryField() {
     const form = document.querySelector("#add-photo-form")
     const categorySelect = form.querySelector('select[name="category"]')
+    const categoryContainer = document.querySelector(".select-wrapper")
 
     if (!categorySelect) return
 
     const categoryOk = categorySelect.value !== ""
 
     if (!categoryOk) {
-        createFieldError(categorySelect, "Veuillez choisir une catégorie.")
+        createFieldError(categoryContainer, "Veuillez choisir une catégorie.")
     } else {
-        clearFieldError(categorySelect)
+        clearFieldError(categoryContainer)
     }
 
     return categoryOk

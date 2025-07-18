@@ -94,6 +94,7 @@ export async function sendNewWork(formData) {
         worksCache = null
         const newWork = await response.json()
         console.log("Nouveau projet ajouté :", newWork)
+        return newWork
     } catch (error) {
         console.error(error.message)
     }

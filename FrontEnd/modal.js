@@ -1,6 +1,5 @@
 import { getWorks, deleteWork, sendNewWork, getCategories } from "./data.js"
-import { displayWorks } from "./gallery.js"
-import { validateImageField, validateTitleField, validateCategoryField} from "./validator.js"
+import { validateImageField, validateTitleField, validateCategoryField } from "./validator.js"
 
 let modal = null
 let confirmPopUp = null
@@ -182,8 +181,8 @@ async function renderModalUpload() {
 
                 </select>
             </form>
-            <div class="add-button-content">
-                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button inactive">Valider</button>
+            <div class="send-button-content">
+                <button type="submit" form="add-photo-form" id="add-to-gallery" class="add-button inactive" disabled>Valider</button>
             </div>
     `
     createModalShell(uploadHTML, true)
@@ -267,6 +266,7 @@ function validateFormFields() {
     const isValid = imageOk && titleOk && categoryOk
 
     submitButton.classList.toggle("inactive", !isValid)
+    submitButton.disabled = !isValid
 
     return isValid;
 }
@@ -285,9 +285,25 @@ async function handleSubmitForm(event) {
     const formData = new FormData(form)
 
     try {
-        await sendNewWork(formData)
+        const newWork = await sendNewWork(formData)
         cachedWorks = await getWorks()
-        displayWorks(cachedWorks)
+
+        const gallery = document.querySelector(".gallery")
+
+        const workElement = document.createElement("figure")
+        workElement.setAttribute("data-id", newWork.id)
+
+        const workImage = document.createElement("img")
+        workImage.src = newWork.imageUrl
+        workImage.alt = newWork.title
+
+        const workCaption = document.createElement("figcaption")
+        workCaption.innerText = newWork.title
+
+        workElement.appendChild(workImage)
+        workElement.appendChild(workCaption)
+        gallery.appendChild(workElement)
+
         closeModal()
     } catch (error) {
         console.error(error.message)
@@ -322,6 +338,7 @@ function bindUploadEvents() {
     fileInput.addEventListener("change", showImagePreview)
     form.addEventListener("submit", handleSubmitForm)
     imageInput.addEventListener("change", validateImageField)
+    form.addEventListener("change", validateFormFields)
     titleInput.addEventListener("blur", validateTitleField)
     categorySelect.addEventListener("blur", validateCategoryField)
 }

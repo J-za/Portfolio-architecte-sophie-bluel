@@ -129,7 +129,6 @@ function editMode() {
 
         editButton.addEventListener("click", (event) => {
             event.preventDefault
-            editButton.classList.remove("edit-button-active")
             openModal()
         })
     } else {
